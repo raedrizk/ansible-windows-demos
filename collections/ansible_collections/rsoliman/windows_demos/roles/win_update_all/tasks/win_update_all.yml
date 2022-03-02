@@ -1,0 +1,17 @@
+---
+- name: Wait for system to become reachable over WinRM
+  wait_for_connection:
+    timeout: "900"
+    
+- name: ensure common OS updates are current
+  win_updates:
+    category_names: "{{ win_updates_category }}"
+  register: update_result
+
+- name: reboot if required
+  block:
+  - name: Rebooting if required
+    debug: msg="reboot required value is {{ update_result.reboot_required }}"
+    changed_when: update_result.reboot_required
+    notify: reboot_server
+  when: restart_after_update

@@ -1,0 +1,7 @@
+- name: Update Windows Host
+  hosts: all
+  vars:
+    ansible_connection: winrm
+    ansible_winrm_server_cert_validation: ignore
+  roles:
+  - rsoliman.windows_demos.win_update_all

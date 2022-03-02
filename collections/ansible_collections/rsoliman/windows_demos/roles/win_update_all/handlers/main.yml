@@ -1,0 +1,5 @@
+---
+# handlers file for win-update-all
+- name: reboot_server
+  win_reboot:
+    reboot_timeout: 3600

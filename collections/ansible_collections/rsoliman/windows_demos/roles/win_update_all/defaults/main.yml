@@ -1,0 +1,4 @@
+---
+# defaults file for win-update-all
+restart_after_update: true
+win_updates_category: ["CriticalUpdates", "SecurityUpdates", "UpdateRollups"]

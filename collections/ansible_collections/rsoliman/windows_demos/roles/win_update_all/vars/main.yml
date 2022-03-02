@@ -1,0 +1,4 @@
+---
+# vars file for win-update-all
+
+restart_after_update: "{{ restart_after_update_choice | default(true) }}"

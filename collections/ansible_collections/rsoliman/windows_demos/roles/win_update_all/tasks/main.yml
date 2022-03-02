@@ -1,0 +1,5 @@
+---
+# tasks file for win-update-all
+- name: Update all Win packages
+  include_tasks: win_update_all.yml
+
