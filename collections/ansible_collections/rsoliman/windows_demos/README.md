@@ -1,25 +1,20 @@
-# Ansible Collection - rsoliman.f5_demos
+# Ansible Collection - rsoliman.windows_demos
 
-A collection of roles used to demo F5 BigIP automation using Ansible.
+A collection of roles used to demo Windows automation using Ansible.
 
 # Requirements
 
-- f5networks.f5_modules collection
+- ansible.windows collection
 - ansible.builtin collection
 
 # Roles
 
-- bigip-add-irule
-- bigip-add-node
-- bigip-add-pool
-- bigip-add-pool-member
-- bigip-add-virtual-server
-- bigip-enable-pool-member
-- bigip-disable-pool-member
-- bigip-gather-info
-- bigip-remove-irule
-- bigip-remove-node
-- bigip-remove-pool
-- bigip-remove-pool-member
-- bigip-remove-virtual-server
-- bigip-save-config
+- win_add_remove_features
+- win_configure_demo_webserver
+- win_configure_pagefile
+- win_copy_files_to_remote
+- win_customize_registry
+- win_download_and_install_package
+- win_manage_choco_packages
+- win_manage_firewall
+- win_update_all

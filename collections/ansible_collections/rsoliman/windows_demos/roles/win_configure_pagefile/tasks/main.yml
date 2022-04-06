@@ -1,0 +1,9 @@
+---
+- name: Set the pagefile to {{ pagefile_maximum_size }}
+  community.windows.win_pagefile:
+    drive: C
+    initial_size: "{{ pagefile_initial_size }}"
+    maximum_size: "{{ pagefile_maximum_size }}"
+    override: yes
+    state: present
+  notify: reboot_server

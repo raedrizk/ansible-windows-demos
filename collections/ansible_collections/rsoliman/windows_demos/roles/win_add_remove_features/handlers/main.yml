@@ -1,0 +1,5 @@
+---
+# handlers file for win-add-remove-features
+- name: reboot_server
+  ansible.windows.win_reboot:
+    reboot_timeout: 3600

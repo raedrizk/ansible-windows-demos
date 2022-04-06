@@ -1,0 +1,7 @@
+---
+# vars file for win-add-remove-features
+features_to_add:
+  - RSAT-AD-Tools
+features_to_remove:
+  - FS-SMB1
+  - DHCP

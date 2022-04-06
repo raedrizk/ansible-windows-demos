@@ -1,0 +1,10 @@
+---
+- name: Make sure {{ account_picture_file_path }} directory tree exists
+  ansible.windows.win_file:
+    path: "{{ account_picture_file_path }}"
+    state: directory
+
+- name: Copy Wallpaper File
+  ansible.windows.win_copy:
+    src: "{{ account_picture_file }}"
+    dest: "{{ account_picture_file_path }}\\{{ account_picture_file }}"

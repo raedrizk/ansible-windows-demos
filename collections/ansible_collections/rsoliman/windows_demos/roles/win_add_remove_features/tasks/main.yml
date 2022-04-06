@@ -1,0 +1,20 @@
+---
+- name: Add windows features
+  ansible.windows.win_feature:
+    name: "{{ features_to_add }}"
+    state: present
+  register: win_feature_add
+  when: features_to_add is defined
+
+- name: Remove windows features
+  ansible.windows.win_feature:
+    name: "{{ features_to_remove }}"
+    state: absent
+  register: win_feature_remove
+  when: features_to_remove is defined
+
+- name: Rebooting if required
+  ansible.builtin.debug: msg="reboot required value is {{ win_feature_add.reboot_required }} and {{ win_feature_remove.reboot_required }}"
+  changed_when: win_feature_add.reboot_required or win_feature_remove.reboot_required
+  notify: reboot_server
+

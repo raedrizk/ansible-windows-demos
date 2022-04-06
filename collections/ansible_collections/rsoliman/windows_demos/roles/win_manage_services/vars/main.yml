@@ -1,0 +1,6 @@
+---
+# vars file for win-enable-disable-services
+services_to_start_and_enable:
+- BITS
+services_to_stop_and_disable:
+- PhoneSvc

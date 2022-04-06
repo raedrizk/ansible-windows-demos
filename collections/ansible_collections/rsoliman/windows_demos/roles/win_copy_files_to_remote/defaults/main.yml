@@ -1,0 +1,7 @@
+---
+# defaults file for win-copy-files-to-remote
+wallpaper_file: img0.jpg
+wallpaper_file_path: C:\Windows\Web\Wallpaper\Windows
+
+account_picture_file: user.png
+account_picture_file_path: C:\ProgramData\Microsoft\User Account Pictures

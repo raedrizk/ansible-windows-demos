@@ -1,5 +1,6 @@
 ---
-# tasks file for win-update-all
-- name: Update all Win packages
-  include_tasks: win_update_all.yml
-
+- name: ensure common OS updates are current
+  ansible.windows.win_updates:
+    category_names: "{{ win_updates_category }}"
+    reboot: "{{ restart_after_update }}"
+  register: update_result

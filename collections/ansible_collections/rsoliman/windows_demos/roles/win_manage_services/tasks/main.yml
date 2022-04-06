@@ -1,0 +1,18 @@
+---
+- name: Set BITS service startup mode to auto started
+  ansible.windows.win_service:
+    name: "{{ item }}"
+    start_mode: auto
+    state: started
+  loop: "{{ services_to_start_and_enable }}"
+  when: services_to_start_and_enable is defined and services_to_start_and_enable|length > 0
+  
+- name: Set PhoneSvc service startup mode to disabled
+  ansible.windows.win_service:
+    name: "{{ item }}"
+    start_mode: disabled
+    state: stopped
+  loop: "{{ services_to_stop_and_disable }}"
+  when: services_to_stop_and_disable is defined and services_to_stop_and_disable|length > 0
+
+

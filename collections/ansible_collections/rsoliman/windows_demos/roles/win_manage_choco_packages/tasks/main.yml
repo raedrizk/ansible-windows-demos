@@ -1,0 +1,6 @@
+---
+- name: Install Packages using Chocolatey
+  chocolatey.chocolatey.win_chocolatey:
+    name: "{{ choco_packages }}" 
+    state: "{{ choco_packages_state }}"
+

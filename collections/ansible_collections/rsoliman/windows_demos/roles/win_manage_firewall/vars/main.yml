@@ -1,0 +1,6 @@
+---
+firewall_state: enabled
+firewall_profiles:
+- Domain
+- Private
+- Public

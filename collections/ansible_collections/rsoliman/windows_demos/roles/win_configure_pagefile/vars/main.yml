@@ -1,0 +1,4 @@
+---
+# vars file for win-configure-pagefile
+pagefile_initial_size: 8192
+pagefile_maximum_size: 8192

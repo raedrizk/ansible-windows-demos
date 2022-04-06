@@ -1,0 +1,5 @@
+---
+- name: Manage the windows firewall for profiles and set to {{ firewall_state }}
+  community.windows.win_firewall:
+    state: "{{ firewall_state }}"
+    profiles: "{{ firewall_profiles }}"

@@ -15,6 +15,8 @@ tags: ['Windows', 'demo','ansible','raedrizk','rsoliman']
 dependencies:
     "ansible.windows": "*"
     "ansible.builtin": "*"
+    "community.windows": "*"
+    "chocolatey.chocolatey": "*"
 
 repository: http://example.com/repository
 homepage: http://example.com

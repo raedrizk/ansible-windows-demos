@@ -1,0 +1,4 @@
+---
+# defaults file for win-install-package
+installer_dir: C:\Installers
+installer_name: setup.exe

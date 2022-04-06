@@ -1,0 +1,11 @@
+---
+- name: Apply Standard registry customizations
+  ansible.windows.win_regedit:
+    key: HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate\AU
+    value: "{{ item.value }}"
+    data: "{{ item.data }}"
+    datatype: dword
+  with_items:
+    - { value: NoAutoUpdate, data: 00000001 }
+    - { value: NoAutoRebootWithLoggedOnUsers, data: 00000001 }
+    - { value: "Re-prompt for restart with scheduled installations", data: 00000001 }

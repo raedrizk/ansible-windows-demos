@@ -1,8 +1,8 @@
-- name: Update Windows Host
+- name: Download and Install Windows Packages
   hosts: all
   gather_facts: false
   vars:
     ansible_connection: winrm
     ansible_winrm_server_cert_validation: ignore
   roles:
-  - rsoliman.windows_demos.win_update_all
+  - rsoliman.windows_demos.win_download_and_install_package
