@@ -22,5 +22,9 @@
   vars:
     from_address: ansible@foxhound.unit
     email_subject: Windows Update report {{ ansible_date_time.time }} {{ ansible_date_time.tz }} - {{ ansible_date_time.date }}
+    smtp_host: "{{ smtp_host_input | default('host.smtp.com')}}"
+    smtp_port: "{{ smtp_port_input | default('587')}}"
+    smtp_username: "{{ smtp_username_input | default('user@admin.com')}}"
+    smtp_password: "{{ smtp_password_input | default('token')}}"
     ansible_connection: local
   run_once: true
