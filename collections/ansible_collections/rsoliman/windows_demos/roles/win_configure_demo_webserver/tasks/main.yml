@@ -28,6 +28,11 @@
     direction: In
     protocol: Tcp
 
+- name: delete default IIS website
+  community.windows.win_iis_website:
+    name: "Default Web Site"
+    state: absent
+    
 - name: Configure the Ansible demo webiste on IIS
   community.windows.win_iis_website:
     name: "Ansible Test Site"
