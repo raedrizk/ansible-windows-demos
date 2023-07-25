@@ -5,6 +5,7 @@
     ansible_connection: winrm
     ansible_winrm_server_cert_validation: ignore
     web_port: 80
+    web_dir: C:\wwwroot\updatereport
   roles:
     - rsoliman.windows_demos.win_get_available_updates
     - rsoliman.windows_demos.win_configure_demo_webserver
