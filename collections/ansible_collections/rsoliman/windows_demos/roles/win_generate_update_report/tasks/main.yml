@@ -1,12 +1,12 @@
 ---
-- name: generate report
-  ansible.builtin.template:
-    src: report.html.j2
-    dest: ./report.html
-  delegate_to: localhost
-  vars:
-    ansible_connection: local
-  run_once: true
+# - name: generate report
+#   ansible.builtin.template:
+#     src: report.html.j2
+#     dest: ./report.html
+#   delegate_to: localhost
+#   vars:
+#     ansible_connection: local
+#   run_once: true
 
 - name: Sending an e-mail
   community.general.mail:
