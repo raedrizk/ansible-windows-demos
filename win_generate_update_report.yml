@@ -6,4 +6,5 @@
     ansible_winrm_server_cert_validation: ignore
   roles:
     - rsoliman.windows_demos.win_get_available_updates
+    - rsoliman.windows_demos.win_configure_demo_webserver
     - rsoliman.windows_demos.win_generate_update_report
