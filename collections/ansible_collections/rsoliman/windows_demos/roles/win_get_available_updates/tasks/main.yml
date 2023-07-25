@@ -1,0 +1,11 @@
+---
+- name: Search for available updates in All categories
+  ansible.windows.win_updates:
+    category_names: "*"
+    state: searched
+  register: available_updates
+
+- name: Set facts for retrieved updates
+  ansible.builtin.set_fact:
+    updates_count: "{{ available_updates.found_update_count }}"
+    updates: "{{ (available_updates.updates.values() | list) if (available_updates.updates is mapping) else (available_updates.updates) }}"

@@ -1,0 +1,20 @@
+---
+- name: Gather Disk info
+  community.windows.win_disk_facts:
+
+- name: Set disk fact
+  ansible.builtin.set_fact:
+    disk: "{{ ansible_facts.disks | selectattr('system_disk') | first }}"
+
+- name: Set C Volume fact
+  ansible.builtin.set_fact:
+    volume: "{{ disk.partitions | selectattr('drive_letter', 'equalto', 'C') | map(attribute='volumes') | first | list | first }}"
+
+- name: Set C Size
+  ansible.builtin.set_fact:
+    volume_size: "{{ volume.size | filesizeformat }}"
+    volume_free_size: "{{ volume.size_remaining | filesizeformat }}"
+
+- name: Print debug info for logging
+  ansible.builtin.debug:
+    msg: C drive is {{ volume_size }} with {{ volume_free_size }} free space

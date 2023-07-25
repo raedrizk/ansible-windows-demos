@@ -1,8 +1,10 @@
+---
 - name: Update Windows Host
-  hosts: all
-  gather_facts: false
+  hosts: "{{ update_hosts }}"
+  gather_facts: true
   vars:
     ansible_connection: winrm
     ansible_winrm_server_cert_validation: ignore
+    update_hosts: "{{ update_hosts_choice if update_hosts_choice is defined else 'all' | default('all') }}"
   roles:
-  - rsoliman.windows_demos.win_update_all
+    - rsoliman.windows_demos.win_update_all

@@ -1,6 +1,64 @@
 ---
-- name: ensure common OS updates are current
-  ansible.windows.win_updates:
-    category_names: "{{ win_updates_category }}"
-    reboot: "{{ restart_after_update }}"
-  register: update_result
+# PRE FLIGHT CHECKS
+- name: Get information on C Drive
+  ansible.builtin.import_role:
+    name: 'win_gather_c_drive_info'
+
+- name: Make sure there is atleast 20GB free for updates
+  ansible.builtin.assert:
+    that:
+      - volume_free_size.split(" ")[0]|float >= 20
+    fail_msg: "Not enough space to perform updates on {{ ansible_facts.hostname }}"
+    success_msg: "atleast 20GB is available for updates, continue"
+  when: volume_free_size is defined
+
+- name: Check for file to skip reboot PRE patching
+  ansible.windows.win_stat:
+    path: "{{ skip_prepatch_reboot_file }}"
+  register: skip_prepatch_reboot
+  when: skip_prepatch_reboot_file is defined
+
+- name: Check for file to skip reboot POST patching
+  ansible.windows.win_stat:
+    path: "{{ skip_postpatch_reboot_file }}"
+  register: skip_postpatch_reboot
+  when: skip_postpatch_reboot_file is defined
+
+# PRE PATCH REBOOT
+- name: Reboot host if a Pre patch reboot is required
+  ansible.windows.win_reboot:
+    reboot_timeout: 3600
+  when: skip_prepatch_reboot.stat is defined and not skip_prepatch_reboot.stat.exists
+
+# PATCH
+- name: Begin Patching
+  block:
+    - name: Apply updates from selected Categories
+      ansible.windows.win_updates:
+        category_names: "{{ win_updates_category }}"
+        reject_list: "{{ win_updates_blacklist | default(omit) }}"
+        accept_list: "{{ win_updates_whitelist | default(omit) }}"
+      register: update_result
+  rescue:
+    - name: Failure encountered, reboot before retrying
+      ansible.windows.win_reboot:
+        reboot_timeout: 3600
+
+    - name: RETRY - Apply updates from selected Categories
+      ansible.windows.win_updates:
+        category_names: "{{ win_updates_category }}"
+        reject_list: "{{ win_updates_blacklist if  win_updates_blacklist is defined and win_updates_blacklist != '' | default(omit) }}"
+        accept_list: "{{ win_updates_whitelist if  win_updates_whitelist is defined and win_updates_whitelist != '' | default(omit) }}"
+      register: update_result
+  always:
+    - name: Reboot if Post Patching reboot is required and allowed
+      ansible.windows.win_reboot:
+        reboot_timeout: 3600
+      when: (skip_postpatch_reboot.stat is defined and skip_postpatch_reboot.stat.exists)
+            and
+            ( update_result.reboot_required is defined and update_result.reboot_required)
+
+    - name: Print information for logging
+      ansible.builtin.debug:
+        msg: "{{ update_result.installed_update_count | default('0') }} updates were installed on {{ ansible_facts.hostname }}"
+      when: update_result.updates is defined

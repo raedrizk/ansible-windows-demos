@@ -1,0 +1,26 @@
+---
+- name: generate report
+  ansible.builtin.template:
+    src: report.html.j2
+    dest: ./report.html
+  delegate_to: localhost
+  vars:
+    ansible_connection: local
+  run_once: true
+
+- name: Sending an e-mail
+  community.general.mail:
+    host: "{{ smtp_host }}"
+    port: "{{ smtp_port }}"
+    username: "{{ smtp_username }}"
+    password: "{{ smtp_password }}"
+    from: "{{ from_address }}"
+    to: "{{ to_address }}"
+    subject: "{{ email_subject }}"
+    body: "{{ lookup('template', 'report.html.j2') }}"
+  delegate_to: localhost
+  vars:
+    from_address: ansible@foxhound.unit
+    email_subject: Windows Update report {{ ansible_date_time.time }} {{ ansible_date_time.tz }} - {{ ansible_date_time.date }}
+    ansible_connection: local
+  run_once: true

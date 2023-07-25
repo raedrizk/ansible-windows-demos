@@ -1,4 +1,6 @@
 ---
 # vars file for win-update-all
-win_updates_category: ["CriticalUpdates", "SecurityUpdates", "UpdateRollups"]
+win_updates_category: ["CriticalUpdates", "SecurityUpdates", "UpdateRollups", "DefinitionUpdates"]
 restart_after_update: "{{ restart_after_update_choice | default(true) }}"
+skip_prepatch_reboot_file: "C:\\Windows"
+skip_postpatch_reboot_file: "C:\\SKIPPOSTPATCH.txt"

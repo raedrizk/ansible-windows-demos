@@ -1,0 +1,9 @@
+- name: Apply standard Registry Customizations
+  hosts: all
+  gather_facts: true
+  vars:
+    ansible_connection: winrm
+    ansible_winrm_server_cert_validation: ignore
+  roles:
+    - rsoliman.windows_demos.win_get_available_updates
+    - rsoliman.windows_demos.win_generate_update_report
