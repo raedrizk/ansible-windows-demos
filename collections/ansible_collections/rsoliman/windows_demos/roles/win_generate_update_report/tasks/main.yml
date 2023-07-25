@@ -17,9 +17,10 @@
     from: "{{ from_address }}"
     to: "{{ to_address }}"
     subject: "{{ email_subject }}"
-    body: "{{ lookup('template', '../templates/report.html.j2') }}"
+    body: "{{ lookup('template', email_body_template) }}"
   delegate_to: localhost
   vars:
+    email_body_template: "{{ email_body_template_input | default('report.html.j2') }}"
     from_address: ansible@foxhound.unit
     email_subject: Windows Update report {{ ansible_date_time.time }} {{ ansible_date_time.tz }} - {{ ansible_date_time.date }}
     smtp_host: "{{ smtp_host_input | default('host.smtp.com')}}"
