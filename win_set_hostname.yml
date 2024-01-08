@@ -1,0 +1,9 @@
+---
+- name: Set hostname of a Windows machine
+  hosts: all
+  gather_facts: true
+  roles:
+  - rsoliman.windows_demos.win_set_hostname
+
+
+
