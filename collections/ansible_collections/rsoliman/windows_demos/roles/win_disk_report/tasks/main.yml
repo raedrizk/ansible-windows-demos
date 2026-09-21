@@ -1,0 +1,53 @@
+---
+- name: Gather disk facts
+  community.windows.win_disk_facts:
+
+- name: Build disk usage report
+  ansible.builtin.set_fact:
+    disk_report: >-
+      {{
+        ansible_facts.disks
+        | map(attribute='partitions')
+        | flatten
+        | selectattr('volumes', 'defined')
+        | map(attribute='volumes')
+        | flatten
+        | selectattr('drive_letter', 'defined')
+        | selectattr('drive_letter', 'ne', '')
+        | map('combine', {})
+        | list
+      }}
+
+- name: Set volume usage facts
+  ansible.builtin.set_fact:
+    volume_usage: >-
+      {{
+        volume_usage | default([]) + [{
+          'drive_letter': item.drive_letter,
+          'label': item.label | default(''),
+          'total_size': item.size | filesizeformat,
+          'free_size': item.size_remaining | filesizeformat,
+          'percent_used': ((item.size - item.size_remaining) / item.size * 100) | round(1) if item.size > 0 else 0
+        }]
+      }}
+  loop: "{{ disk_report }}"
+  loop_control:
+    label: "{{ item.drive_letter }}"
+  when: item.size | default(0) | int > 0
+
+- name: Print disk usage report
+  ansible.builtin.debug:
+    msg: >-
+      Drive {{ item.drive_letter }}:
+      {{ item.label }}
+      - Total: {{ item.total_size }}
+      - Free: {{ item.free_size }}
+      - Used: {{ item.percent_used }}%
+  loop: "{{ volume_usage }}"
+  loop_control:
+    label: "{{ item.drive_letter }}"
+
+- name: Set stats for disk usage
+  ansible.builtin.set_stats:
+    data:
+      disk_usage: "{{ volume_usage }}"

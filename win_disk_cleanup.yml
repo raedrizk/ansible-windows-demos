@@ -1,0 +1,11 @@
+---
+- name: Place Holder playbook for disk cleanup role
+  hosts: all
+  gather_facts: false
+  vars:
+    ansible_connection: winrm
+    ansible_winrm_server_cert_validation: ignore
+  tasks:
+  - name: Pause for 5 seconds
+    ansible.builtin.pause:
+      seconds: 5

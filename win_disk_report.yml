@@ -1,0 +1,9 @@
+---
+- name: Report Disk Usage for All Volumes
+  hosts: all
+  gather_facts: false
+  vars:
+    ansible_connection: winrm
+    ansible_winrm_server_cert_validation: ignore
+  roles:
+    - rsoliman.windows_demos.win_disk_report
