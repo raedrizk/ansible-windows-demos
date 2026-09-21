@@ -6,7 +6,7 @@
   ansible.builtin.set_fact:
     disk_report: >-
       {{
-        ansible_facts.disks
+        ansible_facts.ansible_disks
         | map(attribute='partitions')
         | flatten
         | selectattr('volumes', 'defined')
@@ -17,6 +17,7 @@
         | map('combine', {})
         | list
       }}
+
 
 - name: Set volume usage facts
   ansible.builtin.set_fact:
