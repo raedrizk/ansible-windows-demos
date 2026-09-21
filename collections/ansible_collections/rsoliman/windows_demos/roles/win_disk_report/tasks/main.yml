@@ -2,39 +2,30 @@
 - name: Gather disk facts
   community.windows.win_disk_facts:
 
-- name: Build disk usage report
-  ansible.builtin.set_fact:
-    disk_report: >-
-      {{
-        ansible_facts.ansible_disks
-        | map(attribute='partitions')
-        | flatten
-        | selectattr('volumes', 'defined')
-        | map(attribute='volumes')
-        | flatten
-        | selectattr('drive_letter', 'defined')
-        | selectattr('drive_letter', 'ne', '')
-        | map('combine', {})
-        | list
-      }}
-
-
 - name: Set volume usage facts
   ansible.builtin.set_fact:
     volume_usage: >-
       {{
         volume_usage | default([]) + [{
           'drive_letter': item.drive_letter,
-          'label': item.label | default(''),
-          'total_size': item.size | filesizeformat,
-          'free_size': item.size_remaining | filesizeformat,
-          'percent_used': ((item.size - item.size_remaining) / item.size * 100) | round(1) if item.size > 0 else 0
+          'label': (item.volumes | first).label | default(''),
+          'total_size': (item.volumes | first).size | filesizeformat,
+          'free_size': (item.volumes | first).size_remaining | filesizeformat,
+          'percent_used': (((item.volumes | first).size - (item.volumes | first).size_remaining) / (item.volumes | first).size * 100) | round(1)
         }]
       }}
-  loop: "{{ disk_report }}"
+  loop: >-
+    {{
+      ansible_facts.disks
+      | map(attribute='partitions')
+      | flatten
+      | selectattr('drive_letter', 'defined')
+      | selectattr('drive_letter', 'ne', '')
+      | list
+    }}
   loop_control:
     label: "{{ item.drive_letter }}"
-  when: item.size | default(0) | int > 0
+  when: item.volumes | default([]) | length > 0
 
 - name: Print disk usage report
   ansible.builtin.debug:
