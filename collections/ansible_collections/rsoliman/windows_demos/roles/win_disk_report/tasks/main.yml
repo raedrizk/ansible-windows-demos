@@ -43,3 +43,4 @@
   ansible.builtin.set_stats:
     data:
       disk_usage: "{{ volume_usage }}"
+    per_host: true
