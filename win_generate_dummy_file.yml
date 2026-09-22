@@ -6,7 +6,7 @@
     ansible_connection: winrm
     ansible_winrm_server_cert_validation: ignore
     file_path: "C:\\temp\\dummy_file.txt"
-    file_size_mb: 10
+    file_size_mb: 2048
   tasks:
   - name: Generate a dummy file of specified size
     ansible.builtin.win_shell: |
