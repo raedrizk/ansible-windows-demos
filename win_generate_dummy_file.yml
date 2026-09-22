@@ -8,6 +8,12 @@
     file_path: "C:\\temp\\dummy_file.txt"
     file_size_mb: 2048
   tasks:
+  - name: Make sure {{ file_path | win_dirname }} directory tree exists
+    ansible.windows.win_file:
+      path:  "{{ file_path | win_dirname }}"
+      state: directory
+
+
   - name: Generate a dummy file of specified size
     ansible.builtin.win_shell: |
       $filePath = "{{ file_path }}"
