@@ -17,4 +17,4 @@
       Set-Content -Path $filePath -Value $dummyContent -Force
     args:
       executable: powershell
-    creates: "{{ file_path }}"
+      creates: "{{ file_path }}"
